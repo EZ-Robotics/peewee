@@ -25,7 +25,7 @@ extern const double SPACING;              // Spacing for pure pursuit injected p
 inline pros::Motor l1(11);
 inline pros::Motor r1(-20);
 
-inline pros::Imu imu(6);
+inline pros::Imu imu(5);
 
 inline const std::vector<pros::Motor> left_motors = {l1};
 inline const std::vector<pros::Motor> right_motors = {r1};

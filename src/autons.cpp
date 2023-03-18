@@ -26,10 +26,10 @@ const int TICK_PER_REV = (50.0 * (3600.0 / CART)) * RATIO;  // 2048 for trackers
 const double WHEEL_DIA = 2.0;
 
 // Drive dimensions
-const double WIDTH = 8.5;
+const double WIDTH = 7.2;
 const double RIGHT_OFFSET = WIDTH / 2.0;
 const double LEFT_OFFSET = WIDTH / 2.0;
-const double IMU_SCALER = 0.996;
+const double IMU_SCALER = 1.005;  
 
 void set_pid_defaults() {
   // These are used for odometry motions
@@ -57,7 +57,7 @@ void set_pid_defaults() {
 }
 
 void auton1() {
-  turn_pid(3600, 50);
+  turn_pid(3600, 40);
   // std::vector<pose> carrot1 = boomerang(current, {0, 15, 45});
   // std::vector<pose> carrot2 = boomerang(carrot1[1], {30, 0, 135});
   // smooth_pp({{carrot1[0], FWD, 80},

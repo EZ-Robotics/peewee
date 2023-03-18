@@ -3,8 +3,8 @@
 
 enum lift_state {
   DOWN = 0,
-  MID = 460,
-  UP = 700
+  MID = 50,
+  UP = 620
 };
 
 inline pros::Motor lift_motor(6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);

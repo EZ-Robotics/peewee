@@ -19,6 +19,7 @@ ez::GUI display(
         {l1, "left 1"},
         {r1, "right 1"},
         {intake, "roller"},
+        {lift_motor, "lift"}
     },
 
     {{"Drive 36in - Turn three times - come back", auton1},
@@ -73,6 +74,7 @@ void opcontrol() {
     // printf("(%f, %f, %f)\n", current.x, current.y, current.theta);
     // printf("rawlr(%ld, %ld)   lr(%f, %f)   (%f, %f, %f)\n", get_raw_left(), get_raw_right(), get_left(), get_right(), current.x, current.y, current.theta);
     intake_opcontrol();
+    lift_control();
 
     if (master.get_digital_new_press(DIGITAL_X))
       is_tank = !is_tank;
