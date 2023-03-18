@@ -9,15 +9,12 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 using namespace ez;
 
 int target_speed = 0;  // Global target speed
-int last_input = 0;
 
 // For use in this file only
 void raw_set_intake(int input) {
   for (auto i : intake_motors) {
     i.move_voltage(input * (12000.0 / 127.0));
   }
-
-  last_input = input;
 }
 
 // This is used outside of this file
@@ -29,12 +26,12 @@ void set_intake(int input) {
 // Intake task with antijam logic
 void intake_task() {
   const int wait_time = 30;
-  const int outtake_time = 70;
+  const int outtake_time = 250;
   int jam_counter = 0;
   bool is_jammed = false;
 
   while (true) {
-    // Run intake full power in opposite direction for 250ms when jammed, then
+    // Run intake full power in opposite direction for outtake_time ms when jammed, then
     // set intake back to normal
     if (is_jammed) {
       raw_set_intake(-127 * sgn(target_speed));
@@ -46,7 +43,7 @@ void intake_task() {
       }
     }
 
-    // Detect a jam if velocity is 0 for 250ms
+    // Detect a jam if velocity is 0 for wait_time ms
     else if (target_speed != 0 && intake_motors[0].get_actual_velocity() == 0) {
       jam_counter += DELAY_TIME;
       if (jam_counter > wait_time) {
@@ -55,6 +52,7 @@ void intake_task() {
       }
     }
 
+    // Reset jam_counter when button is released
     if (target_speed == 0) {
       jam_counter = 0;
     }
@@ -64,6 +62,7 @@ void intake_task() {
 }
 pros::Task Intake_Task(intake_task);
 
+// Opcontrol
 void intake_opcontrol() {
   if (master.get_digital(DIGITAL_R1))
     set_intake(127);

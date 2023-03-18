@@ -133,12 +133,7 @@ void point_to_point() {
   else if (there == -1)
     passed_target = current_turn_type == REV ? true : false;
 
-  printf("curr: (%.2f, %.2f)   a(%.2f, %.2f)  b(%.2f, %.2f)   passed: %i   there %i   dir %i   current turn type: %i\n", c.x, c.y, a.x, a.y, b.x, b.y, passed_target, there, dir, current_turn_type);
-
-  // Clip max speed when around target
-  if (fabs(distance_to_point(temp_xy_target, current)) < 1.0 && (pp_index >= movements.size() - 1 || mode == TO_POINT)) {
-    // max_a = max_a > 50 ? 50 : max_a;
-  }
+  // printf("curr: (%.2f, %.2f)   a(%.2f, %.2f)  b(%.2f, %.2f)   passed: %i   there %i   dir %i   current turn type: %i\n", c.x, c.y, a.x, a.y, b.x, b.y, passed_target, there, dir, current_turn_type);
 
   // Stop updating angle when within a radius of target
   if (fabs(distance_to_point(target, current)) > STOP_UPDATING_ANGLE || movements.size() - pp_index > 1) {

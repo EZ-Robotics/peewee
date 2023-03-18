@@ -23,6 +23,7 @@ void set_pose(pose itarget) {
   set_y(itarget.y);
 }
 
+// Tracking based on https://wiki.purduesigbots.com/software/odometry
 void tracking_task() {
   double l_current = 0, r_current = 0;
   double c_current = 0;

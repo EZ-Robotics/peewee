@@ -11,8 +11,8 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // long get_raw_center() { return center_tracker.get_value(); }
 // long get_raw_left() { return left_tracker.get_value(); }
 // long get_raw_right() { return right_tracker.get_value(); }
-long get_raw_left() { return l1.get_position(); }
-long get_raw_right() { return r1.get_position(); }
+long get_raw_left() { return left_motors[0].get_position(); }
+long get_raw_right() { return right_motors[0].get_position(); }
 
 // Returns inches
 // double get_center() { return get_raw_center() / TICK_PER_INCH; }
@@ -28,8 +28,8 @@ void reset_trackers() {
   // center_tracker.reset();
   // left_tracker.reset();
   // right_tracker.reset();
-  l1.tare_position();
-  r1.tare_position();
+  left_motors[0].tare_position();
+  right_motors[0].tare_position();
 }
 
 void set_angle(double input) {

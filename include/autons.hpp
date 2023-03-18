@@ -8,6 +8,4 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 void set_pid_defaults();
 
-inline long int auton_start_time = 0;
-
 void auton1();
