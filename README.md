@@ -1,15 +1,28 @@
-steps to tuning
+# peewee
 
-setup.hpp do drive ports
-setup.hpp do imu ports
-setup cart, wheel size, and gear ratio in `autons.cpp`
+My robot for the SPUR-FLYS minigame, [Mini-Up](https://docs.google.com/document/d/1mCmWGhqI1ZUdg05hKQo3zhatCqkk73Puq9dKWE9Az7k/edit?usp=sharing). 
 
-now we have to tune the drive width
-in `drive.cpp` change `get_angle` to return `current.theta()`
-run an auton that turns to 3600
-adjust `WIDTH` at the top of `autons.cpp` until the robot turns exactly 10 times
+This features pure pursuit, lift PID, and intake anti jam.
 
-now we have to tune imu scaler 
-in `drive.cpp` change `get_angle()` to return `imu.get_rotation()` (this will stay like this now)
-run an auton that turns to 3600
-adjust `IMU_SCALER` until the robot turns exactly 10 times
+## File description
+
+### General `src/`
+ * `autons.cpp`: autonomous routines and chassis constants
+ * `main.cpp`:
+
+### Subsystems `src/`
+ * `intake.cpp`: intake code with jam detection and prevention
+ * `lift.cpp`: lift code with presets and holds down
+
+### Util `src/util/`
+ * `pid.cpp`: PID class used for all PID everywhere and exit conditions
+ * `util/cpp`: general math
+
+### Drive `src/drive/`
+ * `drive.cpp`: general drive functions and joystick curve modifier through controller
+ * `exit_conditions.cpp`: finds out when robot is there
+ * `pid_tasks.cpp`: point to point math that creates outputs to motors
+ * `purepursuit_math.cpp`: path injection and smoothing
+ * `set_pid.cpp`: setting PID and calculating paths
+ * `slew.cpp`: ramps up max speed for the start of movements
+ * `tracking.cpp`: calculates coordinates with motor encoders and IMU
