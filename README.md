@@ -29,7 +29,7 @@ This features pure pursuit, lift PID, and intake anti jam.  It uses [EZ-GUI](htt
  * `util/cpp` general math
 
 ### Drive `src/drive/`
- * `drive.cpp`: general drive functions and joystick curve modifier through controller
+ * `drive.cpp` general drive functions and joystick curve modifier through controller
  * `exit_condiions.cpp` finds out when robot is there
  * `pid_tasks.cpp` point to point math that creates outputs to motors
  * `purepursuit_math.cpp` path injection and smoothing
