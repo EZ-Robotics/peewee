@@ -1,3 +1,5 @@
+![](peewee.png)
+
 A robot for the SPUR-FLYS minigame, [Mini-Up](https://docs.google.com/document/d/1mCmWGhqI1ZUdg05hKQo3zhatCqkk73Puq9dKWE9Az7k/edit?usp=sharing). 
 
 This features pure pursuit, lift PID, and intake anti jam.  It uses [EZ-GUI](https://github.com/EZ-Robotics/EZ-GUI) to see motor temperatures on the brain and autonomous selector. 
