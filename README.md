@@ -1,4 +1,4 @@
-# peewee
+![](peewee.png)
 
 A robot for the SPUR-FLYS minigame, [Mini-Up](https://docs.google.com/document/d/1mCmWGhqI1ZUdg05hKQo3zhatCqkk73Puq9dKWE9Az7k/edit?usp=sharing). 
 
