@@ -36,3 +36,7 @@ This features pure pursuit, lift PID, and intake anti jam.  It uses [EZ-GUI](htt
  * `set_pid.cpp` setting PID and calculating paths
  * `slew.cpp` ramps up max speed for the start of movements
  * `tracking.cpp` calculates coordinates with motor encoders and IMU
+
+## License
+This project is licensed under the Mozilla Public License, version 2.0 - see the [LICENSE](LICENSE)
+file for the full license.
