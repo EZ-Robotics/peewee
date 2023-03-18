@@ -6,8 +6,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "main.h"
 
-using namespace ez;
-
 int target_speed = 0;  // Global target speed
 
 // For use in this file only

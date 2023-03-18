@@ -11,7 +11,7 @@ This features pure pursuit, lift PID, and intake anti jam.  It uses [EZ-GUI](htt
 [Pure Pursuit by Sarah](https://wiki.purduesigbots.com/software/control-algorithms/basic-pure-pursuit)  
 [Adaptive Pure Pursuit by DAWGMA](https://www.chiefdelphi.com/t/paper-implementation-of-the-adaptive-pure-pursuit-controller/166552)  
 [Path Smoothing by James Teow](https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4)  
-[LemLib by Liam 1010](https://github.com/LemLib/LemLib)  
+[Boomerang Desmos by BLRS and Jamie](https://www.desmos.com/calculator/sptjw5szex)  
 [The Beauty of Bézier Curves by Freya Holmér](https://youtu.be/aVwxzDHniEw)
 
 ## File description

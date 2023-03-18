@@ -29,7 +29,7 @@ const double WHEEL_DIA = 2.0;
 const double WIDTH = 7.2;
 const double RIGHT_OFFSET = WIDTH / 2.0;
 const double LEFT_OFFSET = WIDTH / 2.0;
-const double IMU_SCALER = 1.005;  
+const double IMU_SCALER = 1.005;
 
 void set_pid_defaults() {
   // These are used for odometry motions
@@ -57,7 +57,7 @@ void set_pid_defaults() {
 }
 
 void auton1() {
-  turn_pid(3600, 40);
+  // turn_pid(3600, 40);
   // std::vector<pose> carrot1 = boomerang(current, {0, 15, 45});
   // std::vector<pose> carrot2 = boomerang(carrot1[1], {30, 0, 135});
   // smooth_pp({{carrot1[0], FWD, 80},
@@ -67,8 +67,8 @@ void auton1() {
 
   // std::vector<odom> printing = {{{0, 0}, REV, 70}};
   // printing = inject_points(printing);
-  double dist = 30;
-  int speed = 70;
+  double dist = 20;
+  int speed = 40;
   // std::vector<odom> printing = {{{0, dist}, FWD, speed},
   //                               {{dist, dist}, FWD, speed},
   //                               {{dist, 0}, FWD, speed},
@@ -78,17 +78,17 @@ void auton1() {
   // printing = smooth_path(inject_points(printing), 0.75, 0.05, 0.0001);
   // print_path_for_python(printing);
 
-  // smooth_pp({{{0, dist}, FWD, speed},
-  //            {{dist, dist}, FWD, speed},
-  //            {{dist, 0}, FWD, speed},
-  //            {{0, 0}, FWD, speed},
-  //            {{0, dist}, FWD, speed}});
-  // wait_drive();
+  smooth_pp({{{0, dist}, FWD, speed},
+             {{dist, dist}, FWD, speed},
+             {{dist, 0}, FWD, speed},
+             {{0, 0}, FWD, speed},
+             {{0, dist}, FWD, speed}});
+  wait_drive();
 
   // smooth_pp({{{12, 12}, REV}});
 
-  // injected_pp({{{0, 0}, REV, speed}});
-  // wait_drive();
+  injected_pp({{{0, 0}, REV, speed}});
+  wait_drive();
   //  injected_pp({{{0, 18}, FWD}});
   //     injected_pp({{{0, 18}, FWD, 40}});
   //  while (current.y < 18) { pros::delay(10); }

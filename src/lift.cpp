@@ -5,9 +5,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
 #include "main.h"
-#include "pros/adi.hpp"
-
-using namespace ez;
 
 const int SLOW_SPEED = 100;  // Speed when lift is going down
 const int FAST_SPEED = 127;  // Speed when lift is going up
