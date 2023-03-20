@@ -25,6 +25,7 @@ void set_intake(int input) {
 void intake_task() {
   const int wait_time = 30;
   const int outtake_time = 250;
+  const int min_speed = 20;  // minimum speed to move the intake
   int jam_counter = 0;
   bool is_jammed = false;
 
@@ -42,7 +43,7 @@ void intake_task() {
     }
 
     // Detect a jam if velocity is 0 for wait_time ms
-    else if (target_speed != 0 && intake_motors[0].get_actual_velocity() == 0) {
+    else if (abs(target_speed) >= min_speed && intake_motors[0].get_actual_velocity() == 0) {
       jam_counter += DELAY_TIME;
       if (jam_counter > wait_time) {
         jam_counter = 0;
@@ -51,7 +52,7 @@ void intake_task() {
     }
 
     // Reset jam_counter when button is released
-    if (target_speed == 0) {
+    if (target_speed <= min_speed) {
       jam_counter = 0;
     }
 
@@ -62,10 +63,10 @@ pros::Task Intake_Task(intake_task);
 
 // Opcontrol
 void intake_opcontrol() {
-  if (master.get_digital(DIGITAL_R1))
+  if (master.get_digital_new_press(DIGITAL_R1))
     set_intake(127);
-  else if (master.get_digital(DIGITAL_R2))
+  else if (master.get_digital_new_press(DIGITAL_R2))
     set_intake(-127);
   else
-    set_intake(0);
+    set_intake(5);
 }

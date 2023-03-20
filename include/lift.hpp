@@ -10,7 +10,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 enum lift_state {
   DOWN = 0,
   MID = 50,
-  UP = 620
+  UP = 830
 };
 
 inline pros::Motor lift_motor(6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);

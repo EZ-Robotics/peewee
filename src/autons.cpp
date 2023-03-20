@@ -68,7 +68,7 @@ void auton1() {
   // std::vector<odom> printing = {{{0, 0}, REV, 70}};
   // printing = inject_points(printing);
   double dist = 20;
-  int speed = 40;
+  int speed = 70;
   // std::vector<odom> printing = {{{0, dist}, FWD, speed},
   //                               {{dist, dist}, FWD, speed},
   //                               {{dist, 0}, FWD, speed},
