@@ -65,10 +65,18 @@ void auton1() {
   //            {carrot2[0], FWD, 80},
   //            {carrot2[1], FWD, 80}});
 
-  // std::vector<odom> printing = {{{0, 0}, REV, 70}};
-  // printing = inject_points(printing);
   double dist = 20;
   int speed = 70;
+  // std::vector<odom> printing = {{{24, 0}, REV, 70}};
+  std::vector<odom> printing = {{{0, dist}, FWD, speed},
+                                {{dist, dist}, FWD, speed},
+                                {{dist, 0}, FWD, speed},
+                                {{0, 0}, FWD, speed}};
+  printing = inject_points(printing);
+  printing = smooth_path(printing);
+  printing = update_path_angles(printing);
+  print_path_for_python(printing);
+
   // std::vector<odom> printing = {{{0, dist}, FWD, speed},
   //                               {{dist, dist}, FWD, speed},
   //                               {{dist, 0}, FWD, speed},
@@ -76,23 +84,22 @@ void auton1() {
 
   // std::vector<odom> smooth_path(std::vector<odom> ipath, double weight_smooth = 0.75, double weight_data = 0.05, double tolerance = 0.0001);
   // printing = smooth_path(inject_points(printing), 0.75, 0.05, 0.0001);
-  // print_path_for_python(printing);
 
-  smooth_pp({{{0, dist}, FWD, speed},
-             {{dist, dist}, FWD, speed},
-             {{dist, 0}, FWD, speed},
-             {{0, 0}, FWD, speed},
-             {{0, dist}, FWD, speed}});
-  wait_drive();
+  // smooth_pp({{{0, dist}, FWD, speed},
+  //            {{dist, dist}, FWD, speed},
+  //            {{dist, 0}, FWD, speed},
+  //            {{0, 0}, FWD, speed},
+  //            {{0, dist}, FWD, speed}});
+  // wait_drive();
 
   // smooth_pp({{{12, 12}, REV}});
 
-  injected_pp({{{0, 0}, REV, speed}});
-  wait_drive();
-  //  injected_pp({{{0, 18}, FWD}});
-  //     injected_pp({{{0, 18}, FWD, 40}});
-  //  while (current.y < 18) { pros::delay(10); }
-  //  wait_drive();
+  // injected_pp({{{0, 0}, REV, speed}});
+  // wait_drive();
+  //   injected_pp({{{0, 18}, FWD}});
+  //      injected_pp({{{0, 18}, FWD, 40}});
+  //   while (current.y < 18) { pros::delay(10); }
+  //   wait_drive();
   /*
   turn_pid(45);
   wait_drive();

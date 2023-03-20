@@ -47,3 +47,8 @@ std::vector<odom> inject_points(std::vector<odom> imovements);
  * Smooths an input path
  */
 std::vector<odom> smooth_path(std::vector<odom> ipath, double weight_smooth = 0.75, double weight_data = 0.05, double tolerance = 0.0001);
+
+/**
+ * Calculates target angle for injected paths
+ */
+std::vector<odom> update_path_angles(std::vector<odom> ipath);

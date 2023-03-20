@@ -109,10 +109,10 @@ std::vector<odom> inject_points(std::vector<odom> imovements) {
                         input[i + 1].max_xy_speed});
       output_index++;
     }
-    // Make sure the final point is there
-    // output.push_back(input[i + 1]);
-    // output_index++;
   }
+
+  // Update output angles
+  output = update_path_angles(output);
 
   // Return final vector
   return output;
@@ -120,8 +120,8 @@ std::vector<odom> inject_points(std::vector<odom> imovements) {
 
 // Path smoothing based on https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
 std::vector<odom> smooth_path(std::vector<odom> ipath, double weight_smooth, double weight_data, double tolerance) {
-  double path[500][2];
-  double new_path[500][2];
+  double path[1000][2];
+  double new_path[1000][2];
 
   // Convert odom to array
   for (int i = 0; i < ipath.size(); i++) {
@@ -157,5 +157,33 @@ std::vector<odom> smooth_path(std::vector<odom> ipath, double weight_smooth, dou
     output[i].target.y = new_path[i][1];
   }
 
+  // Update output angles
+  output = update_path_angles(output);
+
+  // Return final vector
+  return output;
+}
+
+// Calculates what target angle should be
+std::vector<odom> update_path_angles(std::vector<odom> ipath) {
+  double angle = 0;
+  odom temp;
+  std::vector<odom> output;
+
+  for (int i = 0; i < ipath.size(); i++) {
+    // If checking last point, make angle the same as last
+    // Otherwise, calculate angle between point0 and point1
+    if (i == ipath.size() - 1)
+      angle = output[i - 1].target.theta;
+    else
+      angle = absolute_angle_to_point(ipath[i + 1].target, ipath[i].target);  // Calculate what the angle should be
+
+    // Update angle
+    temp = ipath[i];
+    temp.target.theta = angle;
+    output.push_back(temp);
+  }
+
+  // Return new path
   return output;
 }
