@@ -187,3 +187,56 @@ std::vector<odom> update_path_angles(std::vector<odom> ipath) {
   // Return new path
   return output;
 }
+
+// Calculates arc to follow to get robot to desired end angle
+std::vector<odom> pointsAlongArc(const pose startingPoint, double endingAngle, turn_types direction, int max_speed, double radius) {
+  std::vector<odom> output;
+  double startingAngle = to_rad(startingPoint.theta);
+  endingAngle = to_rad(endingAngle);
+
+  // Calculate the arc length
+  double arcLength = radius * std::abs(endingAngle - startingAngle);
+
+  // Calculate the number of points based on the desired spacing
+  int numPoints = std::max(2, static_cast<int>(std::round(arcLength / SPACING)) + 1);
+
+  // Calculate the center of the circle
+  pose center;
+  center.x = startingPoint.x - radius * cos(startingAngle);
+  center.y = startingPoint.y - radius * sin(startingAngle);
+
+  // Calculate the increment for each point
+  double increment = (endingAngle > startingAngle ? 1.0 : -1.0) * std::abs(endingAngle - startingAngle) / (numPoints - 1);
+
+  // Loop through the points and calculate their positions
+  for (int i = 0; i < numPoints; i++) {
+    // Calculate the angle for this point
+    double angle = startingAngle + increment * i;
+
+    // Calculate the position of the point along the arc
+    double x = center.x + radius * cos(angle);
+    double y = center.y + radius * sin(angle);
+
+    pose tempxy;
+    tempxy.x = x;
+    tempxy.y = y;
+
+    odom temp;
+    temp.target = tempxy;
+    temp.max_xy_speed = max_speed;
+    temp.turn_type = direction;
+
+    // Add the point to a list of points
+    output.push_back(temp);
+  }
+
+  // Update output angles
+  update_path_angles(output);
+
+  for (int i = 0; i < output.size(); i++) {
+    printf("%i:  (%.2f, %.2f)\n", i + 1, output[i].target.x, output[i].target.y);
+  }
+
+  // Return the points
+  return output;
+}

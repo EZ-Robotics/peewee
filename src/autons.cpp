@@ -15,7 +15,7 @@ const int MAX_XY = 100;
 const int TURN_SPEED = 90;
 
 // Pure pursuit constants
-const double STOP_UPDATING_ANGLE = 5;                  // When looking at a target, stop updating the angle when target is within this
+const double STOP_UPDATING_ANGLE = 3;                  // When looking at a target, stop updating the angle when target is within this
 const double LOOK_AHEAD = STOP_UPDATING_ANGLE + 0.25;  // Pure pursuit look ahead distance
 const double SPACING = 1.0;                            // Spacing for pure pursuit injected points
 
@@ -57,6 +57,8 @@ void set_pid_defaults() {
 }
 
 void auton1() {
+  // pointsAlongArc({0, 0, 0}, 90, FWD, 90, WIDTH / 2.0);
+  injected_pp(pointsAlongArc(target, 90, FWD, 90, WIDTH / 2.0));
   // turn_pid(3600, 40);
   // std::vector<pose> carrot1 = boomerang(current, {0, 15, 45});
   // std::vector<pose> carrot2 = boomerang(carrot1[1], {30, 0, 135});
@@ -68,14 +70,14 @@ void auton1() {
   double dist = 20;
   int speed = 70;
   // std::vector<odom> printing = {{{24, 0}, REV, 70}};
-  std::vector<odom> printing = {{{0, dist}, FWD, speed},
-                                {{dist, dist}, FWD, speed},
-                                {{dist, 0}, FWD, speed},
-                                {{0, 0}, FWD, speed}};
-  printing = inject_points(printing);
-  printing = smooth_path(printing);
-  printing = update_path_angles(printing);
-  print_path_for_python(printing);
+  // std::vector<odom> printing = {{{0, dist}, FWD, speed},
+  //                              {{dist, dist}, FWD, speed},
+  //                              {{dist, 0}, FWD, speed},
+  //                              {{0, 0}, FWD, speed}};
+  // printing = inject_points(printing);
+  // printing = smooth_path(printing);
+  // printing = update_path_angles(printing);
+  // print_path_for_python(printing);
 
   // std::vector<odom> printing = {{{0, dist}, FWD, speed},
   //                               {{dist, dist}, FWD, speed},

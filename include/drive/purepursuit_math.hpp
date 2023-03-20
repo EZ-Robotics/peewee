@@ -52,3 +52,8 @@ std::vector<odom> smooth_path(std::vector<odom> ipath, double weight_smooth = 0.
  * Calculates target angle for injected paths
  */
 std::vector<odom> update_path_angles(std::vector<odom> ipath);
+
+/**
+ * Calculates arc to follow to get robot to desired end angle
+ */
+std::vector<odom> pointsAlongArc(const pose startingPoint, double endingAngle, turn_types direction, int max_speed, double radius = WIDTH / 2.0);
