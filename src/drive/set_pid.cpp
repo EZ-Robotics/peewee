@@ -111,7 +111,7 @@ void raw_move_odom(odom imovement) {
 
   // Check if the pp is between motions or at the end of the motion
   // and change constants accordingly
-  if (pp_index >= movements.size() - 1 - (LOOK_AHEAD / SPACING) || mode == TO_POINT || has_been_within_target) {
+  if (pp_index >= movements.size() - 1 - (LOOK_AHEAD / SPACING) || mode == TO_POINT || is_close) {
     auto consts = xyendPID.get_constants();
     xyPID.set_constants(consts.kp, consts.ki, consts.kd, consts.start_i);
     // printf("end constants\n");
@@ -158,12 +158,14 @@ void ptp(odom imovement) {
   movements.clear();
   movements.push_back(imovement);
   passed_target = false;
-  has_been_within_target = false;  // Reset flag for being within range to stop updating
+  is_close = false;  // Reset flag for being within range to stop updating
 
   // Run point_to_point()
   mode = TO_POINT;
 
-  // Set new targets
+  // Set new targets and update target angle
+  double angle = absolute_angle_to_point(imovement.target, target);
+  imovement.target.theta = angle;
   raw_move_odom(imovement);
   update_angle();
 
@@ -186,15 +188,15 @@ void pure_pursuit(std::vector<odom> imovements) {
   injected_pp_index.clear();
   pp_index = 0;
   passed_target = false;
-  has_been_within_target = false;  // Reset flag for being within range to stop updating
+  is_close = false;  // Reset flag for being within range to stop updating
 
   // This is used for pp_wait_until()
   for (int i = 0; i < imovements.size(); i++) {
     injected_pp_index.push_back(i);
   }
 
-  // Set new targets
-  movements = imovements;
+  // Set new targets and update path angles
+  movements = update_path_angles(imovements);
 
   // Update angle target
   update_angle();
@@ -218,7 +220,7 @@ void injected_pp(std::vector<odom> imovements) {
   injected_pp_index.clear();
   pp_index = 0;
   passed_target = false;
-  has_been_within_target = false;  // Reset flag for being within range to stop updating
+  is_close = false;  // Reset flag for being within range to stop updating
 
   // Set new targets
   movements = inject_points(imovements);
@@ -255,7 +257,7 @@ void smooth_pp(std::vector<odom> imovements, double weight_smooth, double weight
   injected_pp_index.clear();
   pp_index = 0;
   passed_target = false;
-  has_been_within_target = false;  // Reset flag for being within range to stop updating
+  is_close = false;  // Reset flag for being within range to stop updating
 
   // Set new targets
   movements = smooth_path(inject_points(imovements), weight_smooth, weight_data, tolerance);

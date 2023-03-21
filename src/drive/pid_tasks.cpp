@@ -7,6 +7,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #include "main.h"
 #include "purepursuit_math.hpp"
 #include "set_pid.hpp"
+#include "setup.hpp"
 #include "util/util.hpp"
 
 void auto_task() {
@@ -112,10 +113,8 @@ void swing_pid_task() {
 void point_to_point() {
   // Flip the direction at the end of the motion so the robot can feedback
   turn_types used_dir = current_turn_type;
-  if (passed_target && has_been_within_target) {
-    // if (mode == TO_POINT)
+  if (passed_target && is_close) {
     used_dir = used_dir == FWD ? REV : FWD;
-    // printf("flipped\n");
   }
 
   // Add for direction
@@ -127,25 +126,19 @@ void point_to_point() {
   pose a = vector_off_point(24, {movements.back().target.x, movements.back().target.y, a_target - 90});
   pose c = current;
   int there = sgn(((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)));  // cross product to decide if above/below line
-
   if (there == 1)
     passed_target = current_turn_type == FWD ? true : false;
   else if (there == -1)
     passed_target = current_turn_type == REV ? true : false;
 
-  // printf("curr: (%.2f, %.2f)   a(%.2f, %.2f)  b(%.2f, %.2f)   passed: %i   there %i   dir %i   current turn type: %i\n", c.x, c.y, a.x, a.y, b.x, b.y, passed_target, there, dir, current_turn_type);
+  // Figure out when we're close to target
+  if (fabs(distance_to_point(target, current)) < STOP_UPDATING_ANGLE && movements.size() - pp_index < 1)
+    is_close = true;
 
-  // Stop updating angle when within a radius of target
-  if (fabs(distance_to_point(target, current)) > STOP_UPDATING_ANGLE || movements.size() - pp_index > 1) {
-    a_target = absolute_angle_to_point(target, current) + add;
-    temp_xy_target = target;
-  } else {
-    if (!has_been_within_target) {
-      temp_xy_target = target;
-      // temp_xy_target = vector_off_point(distance_to_point(movements[movements.size() - 1].target, current) * cos(to_rad(absolute_angle_to_point(movements[movements.size() - 1].target, current))), {current.x, current.y, current.theta});
-    }
-    has_been_within_target = true;
-  }
+  // Update target angle to a point ahead of target
+  temp_xy_target = target;
+  pose look_at = vector_off_point(LOOK_AHEAD, temp_xy_target);
+  a_target = absolute_angle_to_point(look_at, current) + add;
 
   // Compute angle PID and find shortest path to angle
   aPID.set_target(relative_angle_to_point(a_target));
@@ -176,9 +169,9 @@ void point_to_point() {
 
   // printf("relative %f   absolute %f", )
 
-  // printf("dir: %i   passed: %i   has been witin: %i   add: %i   xerr: %f   aerr: %f\n", dir, passed_target, has_been_within_target, add, xyPID.target, aPID.target);
+  // printf("dir: %i   passed: %i   has been witin: %i   add: %i   xerr: %f   aerr: %f\n", dir, passed_target, is_close, add, xyPID.target, aPID.target);
   //  printf("tar (%f, %f)   angle %f\n", temp_xy_target.x, temp_xy_target.y, absolute_angle_to_point(movements[movements.size() - 1].target, current));
-  //  printf("passed %i   outs(%f, %f)   aerr: %f  xyerr: %f      tar(%f, %f)  cur(%f, %f, %f)   pp_index %i\n", passed_target, xy_raw_output, a_raw_output, aPID.target, xyPID.target, temp_xy_target.x, temp_xy_target.y, current.x, current.y, current.theta, pp_index);
+  // printf("passed %i   outs(%f, %f)   aerr: %f  xyerr: %f      tar(%f, %f)  cur(%f, %f, %f)   pp_index %i\n", passed_target, xy_raw_output, a_raw_output, aPID.target, xyPID.target, temp_xy_target.x, temp_xy_target.y, current.x, current.y, current.theta, pp_index);
   //  printf("raw outs(%f, %f)  clipped outs(%i, %i)   max(%i, %i)\n", xy_raw_output, a_raw_output, l_output, r_output, max_xy, max_a);
   //  printf("distance: %f\n", distance_to_point(target, current) * dir);
   //  printf("outs(%i, %i)   rawxy %f   rawa %f  \n", l_output, r_output, xy_raw_output, a_raw_output);

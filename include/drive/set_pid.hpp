@@ -14,7 +14,7 @@ inline int pp_index = 0;
 inline int max_xy = MAX_XY;
 inline int max_turn = TURN_SPEED;
 inline pose temp_xy_target;
-inline bool has_been_within_target = false;
+inline bool is_close = false;
 inline pose turn_to_point_target = {0, 0};
 inline turn_types current_turn_type = FWD;
 inline std::vector<int> injected_pp_index;

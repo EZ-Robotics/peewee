@@ -5,6 +5,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
 #include "drive/exit_conditions.hpp"
+#include "drive/pid_tasks.hpp"
 #include "drive/purepursuit_math.hpp"
 #include "drive/set_pid.hpp"
 #include "main.h"
@@ -58,7 +59,7 @@ void set_pid_defaults() {
 
 void auton1() {
   // pointsAlongArc({0, 0, 0}, 90, FWD, 90, WIDTH / 2.0);
-  injected_pp(pointsAlongArc(target, 90, FWD, 90, WIDTH / 2.0));
+  pure_pursuit(pointsAlongArc(target, 90, FWD, MAX_XY, 15));
   // turn_pid(3600, 40);
   // std::vector<pose> carrot1 = boomerang(current, {0, 15, 45});
   // std::vector<pose> carrot2 = boomerang(carrot1[1], {30, 0, 135});
@@ -67,7 +68,7 @@ void auton1() {
   //            {carrot2[0], FWD, 80},
   //            {carrot2[1], FWD, 80}});
 
-  double dist = 20;
+  double dist = 15;
   int speed = 70;
   // std::vector<odom> printing = {{{24, 0}, REV, 70}};
   // std::vector<odom> printing = {{{0, dist}, FWD, speed},
@@ -96,12 +97,12 @@ void auton1() {
 
   // smooth_pp({{{12, 12}, REV}});
 
-  // injected_pp({{{0, 0}, REV, speed}});
+  // smooth_pp({{{0, 12}, FWD, speed}});
   // wait_drive();
-  //   injected_pp({{{0, 18}, FWD}});
-  //      injected_pp({{{0, 18}, FWD, 40}});
-  //   while (current.y < 18) { pros::delay(10); }
-  //   wait_drive();
+  //    injected_pp({{{0, 18}, FWD}});
+  //       injected_pp({{{0, 18}, FWD, 40}});
+  //    while (current.y < 18) { pros::delay(10); }
+  //    wait_drive();
   /*
   turn_pid(45);
   wait_drive();
