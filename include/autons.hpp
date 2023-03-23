@@ -9,3 +9,5 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 void set_pid_defaults();
 
 void auton1();
+
+void skills();

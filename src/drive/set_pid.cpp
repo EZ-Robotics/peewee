@@ -97,28 +97,14 @@ void raw_move_odom(odom imovement) {
   if (imovement.target.x != target.x && imovement.target.y != target.y)
     target.theta = absolute_angle_to_point(imovement.target, target);
 
-  /*
-  // Check the angle difference between previous target and current target
-  // and decide what constants to use
-  if (fabs(target.theta) < 5) {
-    auto consts = headingPID.get_constants();
-    aPID.set_constants(consts.kp, consts.ki, consts.kd, consts.start_i);
-  } else {
-    auto consts = angleppPID.get_constants();
-    aPID.set_constants(consts.kp, consts.ki, consts.kd, consts.start_i);
-  }
-  */
-
   // Check if the pp is between motions or at the end of the motion
   // and change constants accordingly
   if (pp_index >= movements.size() - 1 - (LOOK_AHEAD / SPACING) || mode == TO_POINT || is_close) {
     auto consts = xyendPID.get_constants();
     xyPID.set_constants(consts.kp, consts.ki, consts.kd, consts.start_i);
-    // printf("end constants\n");
   } else {
     auto consts = ppPID.get_constants();
     xyPID.set_constants(consts.kp, consts.ki, consts.kd, consts.start_i);
-    // printf("during constants\n");
   }
 
   auto a_consts = ptp_heading_pid.get_constants();
@@ -246,7 +232,7 @@ void injected_pp(std::vector<odom> imovements) {
 // Pure pursuit, for external use
 void smooth_pp(std::vector<odom> imovements, double weight_smooth, double weight_data, double tolerance) {
   // Print targets
-  printf("Smooth Point Injected Pure Pursuit Motion Started... Target Coordinates: \n");
+  printf("Smooth Point Injected Pure Pursuit Motion Started... Target Coordinates: ");
   for (int i = 0; i < imovements.size(); i++) {
     std::string turn = turn_types_to_string(imovements[i].turn_type);
     std::cout << "Point " << i << ": (" << imovements[i].target.x << ", " << imovements[i].target.y << ", " << imovements[i].target.theta << ")  Turn: " << turn << "\n";

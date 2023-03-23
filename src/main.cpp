@@ -13,7 +13,8 @@ ez::GUI display(
      {intake, "roller"},
      {lift_motor, "lift"}},
 
-    {{"test auto", auton1}});
+    {{"skills", skills},
+     {"test auto", auton1}});
 
 // This occurs as soon as the program starts.
 void initialize() {
@@ -28,6 +29,8 @@ void initialize() {
   set_curve_default(0.0, 0.0);
   set_left_curve_buttons(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);
   set_right_curve_buttons(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
+
+  set_lift_exit();
 
   imu.reset(true);
   imu.set_data_rate(5);

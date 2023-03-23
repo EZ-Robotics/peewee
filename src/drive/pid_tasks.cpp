@@ -121,15 +121,22 @@ void point_to_point() {
   int add = used_dir == REV ? 180 : 0;
   int dir = add == 180 ? -1 : 1;
 
+  pose a, b, c;
+  int there;
   // Check to see if we've passed target
-  pose b = vector_off_point(24, {movements.back().target.x, movements.back().target.y, a_target + 90});
-  pose a = vector_off_point(24, {movements.back().target.x, movements.back().target.y, a_target - 90});
-  pose c = current;
-  int there = sgn(((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)));  // cross product to decide if above/below line
-  if (there == 1)
-    passed_target = current_turn_type == FWD ? true : false;
-  else if (there == -1)
-    passed_target = current_turn_type == REV ? true : false;
+  if (is_close) {
+    b = vector_off_point(24, {movements.back().target.x, movements.back().target.y, a_target + 90});
+    a = vector_off_point(24, {movements.back().target.x, movements.back().target.y, a_target - 90});
+    c = current;
+    there = sgn(((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)));  // cross product to decide if above/below line
+
+    if (there == 1)
+      passed_target = current_turn_type == FWD ? true : false;
+    else if (there == -1)
+      passed_target = current_turn_type == REV ? true : false;
+  } else {
+    passed_target = false;
+  }
 
   // Figure out when we're close to target
   if (fabs(distance_to_point(target, current)) < STOP_UPDATING_ANGLE && movements.size() - pp_index < 1)
@@ -137,7 +144,7 @@ void point_to_point() {
 
   // Update target angle to a point ahead of target
   temp_xy_target = target;
-  pose look_at = vector_off_point(LOOK_AHEAD, temp_xy_target);
+  pose look_at = vector_off_point(24, temp_xy_target);
   a_target = absolute_angle_to_point(look_at, current) + add;
 
   // Compute angle PID and find shortest path to angle
@@ -171,7 +178,7 @@ void point_to_point() {
 
   // printf("dir: %i   passed: %i   has been witin: %i   add: %i   xerr: %f   aerr: %f\n", dir, passed_target, is_close, add, xyPID.target, aPID.target);
   //  printf("tar (%f, %f)   angle %f\n", temp_xy_target.x, temp_xy_target.y, absolute_angle_to_point(movements[movements.size() - 1].target, current));
-  // printf("passed %i   outs(%f, %f)   aerr: %f  xyerr: %f      tar(%f, %f)  cur(%f, %f, %f)   pp_index %i\n", passed_target, xy_raw_output, a_raw_output, aPID.target, xyPID.target, temp_xy_target.x, temp_xy_target.y, current.x, current.y, current.theta, pp_index);
+  printf("passed %i  isclose %i    outs(%f, %f)   aerr: %f  xyerr: %f      tar(%f, %f)  cur(%f, %f, %f)   pp_index %i\n", passed_target, is_close, xy_raw_output, a_raw_output, aPID.target, xyPID.target, temp_xy_target.x, temp_xy_target.y, current.x, current.y, current.theta, pp_index);
   //  printf("raw outs(%f, %f)  clipped outs(%i, %i)   max(%i, %i)\n", xy_raw_output, a_raw_output, l_output, r_output, max_xy, max_a);
   //  printf("distance: %f\n", distance_to_point(target, current) * dir);
   //  printf("outs(%i, %i)   rawxy %f   rawa %f  \n", l_output, r_output, xy_raw_output, a_raw_output);

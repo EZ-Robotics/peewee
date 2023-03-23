@@ -63,9 +63,9 @@ pros::Task Intake_Task(intake_task);
 
 // Opcontrol
 void intake_opcontrol() {
-  if (master.get_digital_new_press(DIGITAL_R1))
+  if (master.get_digital(DIGITAL_R1))
     set_intake(127);
-  else if (master.get_digital_new_press(DIGITAL_R2))
+  else if (master.get_digital(DIGITAL_R2))
     set_intake(-127);
   else
     set_intake(5);

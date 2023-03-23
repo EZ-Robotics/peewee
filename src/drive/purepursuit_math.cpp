@@ -112,7 +112,7 @@ std::vector<odom> inject_points(std::vector<odom> imovements) {
   }
 
   // Update output angles
-  output = update_path_angles(output);
+  // output = update_path_angles(output);
 
   // Return final vector
   return output;
@@ -158,7 +158,7 @@ std::vector<odom> smooth_path(std::vector<odom> ipath, double weight_smooth, dou
   }
 
   // Update output angles
-  output = update_path_angles(output);
+  // output = update_path_angles(output);
 
   // Return final vector
   return output;
@@ -189,6 +189,7 @@ std::vector<odom> update_path_angles(std::vector<odom> ipath) {
 }
 
 // Calculates arc to follow to get robot to desired end angle
+// made and debugged with ChatGPT
 std::vector<odom> pointsAlongArc(const pose startingPoint, double endingAngle, turn_types direction, int max_speed, double radius) {
   std::vector<odom> output;
   double startingAngle = to_rad(startingPoint.theta);
@@ -202,8 +203,7 @@ std::vector<odom> pointsAlongArc(const pose startingPoint, double endingAngle, t
 
   // Calculate the center of the circle
   pose center;
-  center.x = startingPoint.x - radius * cos(startingAngle);
-  center.y = startingPoint.y - radius * sin(startingAngle);
+  center = vector_off_point(radius, {startingPoint.x, startingPoint.y, startingPoint.theta - to_deg(endingAngle)});
 
   // Calculate the increment for each point
   double increment = (endingAngle > startingAngle ? 1.0 : -1.0) * std::abs(endingAngle - startingAngle) / (numPoints - 1);
@@ -231,12 +231,13 @@ std::vector<odom> pointsAlongArc(const pose startingPoint, double endingAngle, t
   }
 
   // Update output angles
-  update_path_angles(output);
+  // update_path_angles(output);
 
+  printf("center (%.2f, %.2f)\n", center.x, center.y);
   for (int i = 0; i < output.size(); i++) {
     printf("%i:  (%.2f, %.2f)\n", i + 1, output[i].target.x, output[i].target.y);
   }
+  printf("\n");
 
-  // Return the points
   return output;
 }
